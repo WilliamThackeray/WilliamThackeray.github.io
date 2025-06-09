@@ -6,6 +6,10 @@
     <title>William Thackeray</title>
 
     <style>
+      :root {
+        --accent-color: #fcbf49;
+      }
+
       body {
         background-color: #1f1f1f;
         color: #fff;
@@ -16,10 +20,39 @@
         padding: 0;
         text-align: center;
       }
+
+      nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav ul li {
+        margin: 0 10px;
+      }
+
+      nav ul li a {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
     </style>
   </head>
   <body>
     <h1>Hello There.</h1>
     <h2>Welcome to my website. I am William Thackeray.</h2>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
   </body>
 </html>
