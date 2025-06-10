@@ -98,15 +98,17 @@
     <h2>Welcome to my website. I am William Thackeray.</h2>
     <nav>
       <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#blog">Blog</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a class="navLink" href="#about">About</a></li>
+        <li><a class="navLink" href="#projects">Projects</a></li>
+        <li><a class="navLink" href="#blog">Blog</a></li>
+        <li><a class="navLink" href="#contact">Contact</a></li>
       </ul>
     </nav>
 
     <!-- Toast container -->
     <div class="toast-container" id="toast-container"></div>
+
+    <main></main>
   </body>
   <script>
     // Toast notification functionality
@@ -116,7 +118,7 @@
       // Create toast element
       const toast = document.createElement("div");
       toast.className = "toast";
-      toast.textContent = message;
+      toast.innerHTML = message;
 
       // Add to container
       container.appendChild(toast);
@@ -141,11 +143,17 @@
     }
 
     // Add event listeners to navigation links
-    const navLinks = document.querySelectorAll("nav ul li a");
+    const navLinks = document.querySelectorAll(".navLink");
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
+        let linkName =
+          link.href.split("#")[1][0].toUpperCase() +
+          link.href.split("#")[1].slice(1);
+
         e.preventDefault();
-        showToast("This link does not work yet. Thanks for trying. 👍");
+        showToast(
+          `<p>This link to <b>${linkName}</b> does not work yet. Thanks for trying. 👍</p>`
+        );
       });
     });
   </script>
