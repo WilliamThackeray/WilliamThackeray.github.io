@@ -253,10 +253,52 @@ a[aria-disabled="true"] {
   outline: none;
 }
 
+.detail-heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
 .detail-title {
   margin: 0;
   font-size: 1.15rem;
   font-weight: 700;
+  line-height: 1.2;
+}
+
+.detail-signature[hidden] {
+  display: none;
+}
+
+.detail-heading.has-signature {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.35rem;
+}
+
+.detail-heading.has-signature .detail-title {
+  position: relative;
+  z-index: 1;
+  text-shadow:
+    0 0 4px var(--bg),
+    0 1px 8px var(--bg);
+}
+
+.detail-heading.has-signature .detail-signature {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  display: block;
+  width: 112%;
+  height: 4rem;
+  transform: translate(-50%, -40%);
+  background-color: var(--accent);
+  -webkit-mask: url("./assets/William-signature.svg") center / contain no-repeat;
+  mask: url("./assets/William-signature.svg") center / contain no-repeat;
+  pointer-events: none;
 }
 
 .detail-section {

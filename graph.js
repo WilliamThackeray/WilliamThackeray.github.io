@@ -8,6 +8,8 @@
   const homeColumn = document.getElementById("home-column");
   const detailColumn = document.getElementById("detail-column");
   const detailTitle = document.getElementById("detail-title");
+  const detailHeading = document.querySelector(".detail-heading");
+  const detailSignature = document.getElementById("detail-signature");
   const backBtn = document.getElementById("back-btn");
   const navNodes = Array.from(document.querySelectorAll(".nav-node"));
 
@@ -228,6 +230,12 @@
     if (section) {
       detailTitle.textContent = section.dataset.title || "";
     }
+    setSignatureVisible(sectionId === "me");
+  }
+
+  function setSignatureVisible(show) {
+    if (detailSignature) detailSignature.hidden = !show;
+    if (detailHeading) detailHeading.classList.toggle("has-signature", !!show);
   }
 
   async function openSection(sectionId, { pushHash = true, instant = false } = {}) {
@@ -292,6 +300,7 @@
           if (el) el.hidden = true;
         });
         detailTitle.textContent = "";
+        setSignatureVisible(false);
         homeColumn.scrollIntoView({
           behavior: prefersReducedMotion() ? "auto" : "smooth",
           block: "start",
@@ -318,6 +327,7 @@
         if (el) el.hidden = true;
       });
       detailTitle.textContent = "";
+      setSignatureVisible(false);
       syncCameraPadding();
       await travelTo(homeColumn, { instant: true });
     } finally {
