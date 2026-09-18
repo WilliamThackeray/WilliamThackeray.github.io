@@ -4,157 +4,149 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>William Thackeray</title>
-
-    <style>
-      :root {
-        --accent-color: #fcbf49;
-      }
-
-      body {
-        background-color: #1f1f1f;
-        color: #fff;
-        font-family: "Inter", sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-      }
-
-      nav {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      nav ul {
-        display: flex;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      nav ul li {
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      nav ul li a {
-        color: var(--accent-color);
-        text-decoration: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        transition: all 0.3s ease-in-out;
-      }
-
-      nav ul li a:hover {
-        font-size: 1.2em;
-        transition: font-size 0.3s ease-in-out;
-      }
-
-      /* Toast notification styles */
-      .toast-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        pointer-events: none;
-      }
-
-      .toast {
-        background-color: #333;
-        color: #fff;
-        padding: 12px 16px;
-        border-radius: 8px;
-        border-left: 4px solid var(--accent-color);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        max-width: 300px;
-        font-size: 14px;
-        line-height: 1.4;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 0.3s ease-in-out;
-        pointer-events: auto;
-      }
-
-      .toast.show {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      .toast.fade-out {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Hello There.</h1>
-    <h2>Welcome to my website. I am William Thackeray.</h2>
-    <nav>
-      <ul>
-        <li><a class="navLink" href="#about">About</a></li>
-        <li><a class="navLink" href="#projects">Projects</a></li>
-        <li><a class="navLink" href="#blog">Blog</a></li>
-        <li><a class="navLink" href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="graph-viewport" id="graph-viewport">
+      <div class="graph-world" id="graph-world">
+        <svg class="graph-edges" id="graph-edges" aria-hidden="true"></svg>
 
-    <!-- Toast container -->
-    <div class="toast-container" id="toast-container"></div>
+        <aside class="column home-column" id="home-column">
+          <header class="home-intro">
+            <img
+              class="headshot"
+              src="./assets/headshot.JPG"
+              alt="William Thackeray"
+              width="96"
+              height="96"
+            />
+            <div class="home-copy">
+              <p class="greeting">Hello There.</p>
+              <h1>William Thackeray</h1>
+              <p class="tagline">Building things, writing words, and having fun along the way.</p>
+            </div>
+          </header>
 
-    <main></main>
+          <nav class="home-nav" aria-label="Main">
+            <button type="button" class="nav-node" data-section="me" aria-expanded="false">
+              Me.
+            </button>
+            <button type="button" class="nav-node" data-section="stuff" aria-expanded="false">
+              Stuff.
+            </button>
+            <button type="button" class="nav-node" data-section="words" aria-expanded="false">
+              Words.
+            </button>
+            <button type="button" class="nav-node" data-section="contact" aria-expanded="false">
+              Contact.
+            </button>
+            <button type="button" class="nav-node" data-section="fun" aria-expanded="false">
+              Fun.
+            </button>
+          </nav>
+        </aside>
+
+        <div class="column detail-column" id="detail-column" hidden>
+          <div class="detail-header">
+            <button type="button" class="back-btn" id="back-btn" aria-label="Back to home">
+              ← Back
+            </button>
+            <h2 class="detail-title" id="detail-title"></h2>
+          </div>
+
+          <section class="detail-section" id="me" data-title="Me." hidden>
+            <article class="leaf-card">
+              <h3>About</h3>
+              <p>
+                Hi — I'm William. This bio is a placeholder for now. Swap it later
+                with a short intro about what you do and care about.
+              </p>
+            </article>
+          </section>
+
+          <section class="detail-section" id="stuff" data-title="Stuff." hidden>
+            <article class="leaf-card">
+              <p class="card-badge">Placeholder</p>
+              <h3>Project One</h3>
+              <p>Short description of a project you've worked on. Replace this card with a real one.</p>
+              <a class="card-link" href="#" aria-disabled="true">Link coming soon</a>
+            </article>
+            <article class="leaf-card">
+              <p class="card-badge">Placeholder</p>
+              <h3>Project Two</h3>
+              <p>Another project slot — title, one-liner, and a link when you have them.</p>
+              <a class="card-link" href="#" aria-disabled="true">Link coming soon</a>
+            </article>
+            <article class="leaf-card">
+              <p class="card-badge">Placeholder</p>
+              <h3>Project Three</h3>
+              <p>Third placeholder so Stuff. already feels like a branch of project nodes.</p>
+              <a class="card-link" href="#" aria-disabled="true">Link coming soon</a>
+            </article>
+          </section>
+
+          <section class="detail-section" id="words" data-title="Words." hidden>
+            <article class="leaf-card">
+              <p class="card-badge">Coming soon</p>
+              <h3>Post title</h3>
+              <p>A writing spot for essays, notes, or updates. Content TBD.</p>
+            </article>
+            <article class="leaf-card">
+              <p class="card-badge">Coming soon</p>
+              <h3>Another post</h3>
+              <p>Second placeholder card for future words.</p>
+            </article>
+          </section>
+
+          <section class="detail-section" id="contact" data-title="Contact." hidden>
+            <article class="leaf-card">
+              <h3>GitHub</h3>
+              <p>Find my code and experiments.</p>
+              <a
+                class="card-link"
+                href="https://github.com/WilliamThackeray"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github.com/WilliamThackeray
+              </a>
+            </article>
+            <article class="leaf-card">
+              <h3>Email</h3>
+              <p>Reach out when you want to say hello.</p>
+              <a class="card-link" href="#" aria-disabled="true">email@placeholder.com</a>
+            </article>
+          </section>
+
+          <section class="detail-section" id="fun" data-title="Fun." hidden>
+            <article class="leaf-card fun-card">
+              <h3>Minigolfle #92</h3>
+              <p>Strokes: <strong>6</strong></p>
+              <a
+                class="card-link"
+                href="https://www.minigolfle.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                minigolfle.com
+              </a>
+              <img
+                class="fun-thumb"
+                src="./assets/minigolfe92.png"
+                alt="Minigolfle #92 score screenshot"
+              />
+            </article>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="graph.js"></script>
   </body>
-  <script>
-    // Toast notification functionality
-    function showToast(message) {
-      const container = document.getElementById("toast-container");
-
-      // Create toast element
-      const toast = document.createElement("div");
-      toast.className = "toast";
-      toast.innerHTML = message;
-
-      // Add to container
-      container.appendChild(toast);
-
-      // Trigger show animation
-      setTimeout(() => {
-        toast.classList.add("show");
-      }, 10);
-
-      // Start fade out after 4.5 seconds (to give 0.5s for fade animation)
-      setTimeout(() => {
-        toast.classList.add("fade-out");
-        toast.classList.remove("show");
-
-        // Remove from DOM after fade animation completes
-        setTimeout(() => {
-          if (container.contains(toast)) {
-            container.removeChild(toast);
-          }
-        }, 300);
-      }, 4500);
-    }
-
-    // Add event listeners to navigation links
-    const navLinks = document.querySelectorAll(".navLink");
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (e) => {
-        let linkName =
-          link.href.split("#")[1][0].toUpperCase() +
-          link.href.split("#")[1].slice(1);
-
-        e.preventDefault();
-        showToast(
-          `<p>This link to <b>${linkName}</b> does not work yet. Thanks for trying. 👍</p>`
-        );
-      });
-    });
-  </script>
 </html>

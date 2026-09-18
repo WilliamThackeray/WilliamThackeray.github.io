@@ -1,0 +1,373 @@
+:root {
+  --bg: #1a1d24;
+  --bg-node: #2a2e38;
+  --border: rgba(255, 255, 255, 0.12);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --accent: #fcbf49;
+  --accent-soft: rgba(252, 191, 73, 0.18);
+  --radius: 14px;
+  --column-width: min(360px, 88vw);
+  --travel-gap: max(52vw, 520px);
+  --pan-duration: 0.85s;
+  --fade-duration: 0.4s;
+  --ease-travel: cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  color: var(--accent);
+}
+
+a[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.55;
+  text-decoration: none;
+}
+
+.graph-viewport {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-behavior: auto;
+}
+
+.graph-world {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--travel-gap);
+  width: max-content;
+  min-height: 100%;
+  padding: 48px 0;
+}
+
+.graph-edges {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.graph-edges path.edge {
+  fill: none;
+  stroke: rgba(180, 186, 198, 0.55);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+.graph-edges path.edge.is-drawing {
+  stroke-dasharray: var(--path-length, 400);
+  stroke-dashoffset: var(--path-length, 400);
+  animation: draw-edge var(--pan-duration) var(--ease-travel) forwards;
+}
+
+@keyframes draw-edge {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.graph-edges marker path {
+  fill: rgba(180, 186, 198, 0.75);
+}
+
+.column {
+  position: relative;
+  z-index: 2;
+  width: var(--column-width);
+  flex-shrink: 0;
+  padding: 8px;
+}
+
+.home-column {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 28px 22px;
+}
+
+.home-intro {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.headshot {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-soft);
+  flex-shrink: 0;
+}
+
+.home-copy .greeting {
+  margin: 0 0 2px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.home-copy h1 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.home-copy .tagline {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.home-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-node {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--bg-node);
+  border: 1px solid transparent;
+  font-size: 1.05rem;
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.25s ease,
+    box-shadow 0.2s ease;
+}
+
+.nav-node:hover,
+.nav-node:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.nav-node.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px rgba(252, 191, 73, 0.35);
+}
+
+.graph-viewport.is-open .nav-node:not(.is-active) {
+  opacity: 0.35;
+}
+
+.detail-column[hidden],
+.detail-section[hidden] {
+  display: none !important;
+}
+
+.detail-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 28px 22px;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.back-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.back-btn:hover,
+.back-btn:focus-visible {
+  color: var(--text);
+  border-color: var(--border);
+  outline: none;
+}
+
+.detail-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leaf-card {
+  background: var(--bg-node);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  text-align: left;
+}
+
+.leaf-card h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.leaf-card p {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.leaf-card p:last-child {
+  margin-bottom: 0;
+}
+
+.card-badge {
+  display: inline-block;
+  margin: 0 0 8px !important;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent) !important;
+  font-size: 0.7rem !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+.fun-thumb {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --pan-duration: 0.01ms;
+    --fade-duration: 0.01ms;
+  }
+
+  .graph-world,
+  .nav-node {
+    transition: none !important;
+  }
+
+  .graph-edges path.edge.is-drawing {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Mobile: stack and expand below nav, no sideways camera / edges */
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .graph-viewport {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .graph-edges {
+    display: none;
+  }
+
+  .graph-world {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 28px 16px 48px;
+    gap: 20px;
+  }
+
+  .column {
+    width: 100%;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
+  .home-intro {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .home-copy .tagline {
+    max-width: 28ch;
+    margin-inline: auto;
+  }
+}
