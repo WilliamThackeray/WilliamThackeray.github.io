@@ -125,22 +125,72 @@
           </section>
 
           <section class="detail-section" id="fun" data-title="Fun." hidden>
-            <article class="leaf-card fun-card">
-              <h3>Minigolfle #92</h3>
-              <p>Strokes: <strong>6</strong></p>
-              <a
-                class="card-link"
-                href="https://www.minigolfle.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                minigolfle.com
-              </a>
-              <img
-                class="fun-thumb"
-                src="./assets/minigolfe92.png"
-                alt="Minigolfle #92 score screenshot"
-              />
+            <article class="leaf-card">
+              <h3>Typing</h3>
+              <p class="stat-line"><span class="stat-value" data-fun="wpm">103</span> <span class="stat-unit">WPM</span></p>
+              <p>Average typing speed.</p>
+            </article>
+
+            <article class="leaf-card">
+              <p class="card-badge">Work in Progress</p>
+              <h3>Lifetime commits</h3>
+              <p class="stat-line"><span class="stat-value" data-fun="commits">—</span></p>
+              <p>GitHub commits across the years. Update when you have a total.</p>
+            </article>
+
+            <article class="leaf-card" id="fun-languages">
+              <h3>Languages</h3>
+              <p class="fun-meta">Across public repos on GitHub</p>
+              <div class="lang-bars" id="lang-bars" aria-live="polite">
+                <p class="fun-loading">Loading from GitHub…</p>
+              </div>
+            </article>
+
+            <!-- <article class="leaf-card">
+              <p class="card-badge">Placeholder</p>
+              <h3>Wordle</h3>
+              <p>Played: <strong data-fun="wordle-played">—</strong> · Win: <strong data-fun="wordle-win">—</strong>% · Max streak: <strong data-fun="wordle-streak">—</strong></p>
+              <p>Paste your NYT stats when you’re ready.</p>
+            </article> -->
+
+            <article class="leaf-card">
+              <h3>Books · 2026 · Read: 23</h3>
+              <ul class="fun-list" data-fun="books">
+                <li>1st Place: Morning Star by Pierce Brown</li>
+                <li>2nd Place: The Fury of the Gods by John Gwynne</li>
+                <li>3rd Place: Silent Patient by Alex Michaelides</li>
+              </ul>
+            </article>
+
+            <article class="leaf-card">
+              <h3>Keyboard</h3>
+              <p data-fun="keyboard">Melgeek Modern97 · Kailh Sonic53 switches · 97 Key Layout</p>
+            </article>
+
+            <article class="leaf-card fun-listening">
+              <h3>Listening</h3>
+              <p class="fun-meta">On rotation</p>
+              <div class="album-row">
+                <img
+                  class="album-art"
+                  src="./assets/czarface-frankie-pulitzer.jpg"
+                  alt="Album cover for Czarface Meets Frankie Pulitzer"
+                  width="72"
+                  height="72"
+                />
+                <div class="album-copy">
+                  <p class="album-title">Czarface Meets Frankie Pulitzer</p>
+                  <p class="album-artist">CZARFACE &amp; Frankie Pulitzer</p>
+                  <a
+                    class="card-link"
+                    href="https://open.spotify.com/album/42dcDultUHOEd4QU4umdq6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open on Spotify
+                  </a>
+                </div>
+              </div>
             </article>
           </section>
         </div>
@@ -148,5 +198,6 @@
     </div>
 
     <script src="graph.js"></script>
+    <script src="fun.js"></script>
   </body>
 </html>

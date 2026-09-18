@@ -115,6 +115,35 @@
     });
   }
 
+  /** Retract existing edges back toward the parent (reverse of draw). */
+  function eraseEdges() {
+    const paths = Array.from(edgesSvg.querySelectorAll("path.edge"));
+    if (!paths.length || prefersReducedMotion()) {
+      clearEdges();
+      return Promise.resolve();
+    }
+
+    paths.forEach((path) => {
+      const length = path.getTotalLength();
+      path.style.setProperty("--path-length", String(length));
+      path.style.strokeDasharray = String(length);
+      path.style.strokeDashoffset = "0";
+      path.classList.remove("is-drawing");
+      path.removeAttribute("marker-end");
+      // Restart erase animation cleanly
+      path.classList.remove("is-erasing");
+      void path.getBoundingClientRect();
+      path.classList.add("is-erasing");
+    });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        clearEdges();
+        resolve();
+      }, panMs() + 40);
+    });
+  }
+
   /** Side padding so the first/last column can sit alone in the center. */
   function syncCameraPadding() {
     if (isMobile()) {
@@ -270,13 +299,17 @@
         return;
       }
 
-      if (returningFrom) {
-        activeSection = returningFrom;
-        drawEdges({ animate: false });
-        activeSection = null;
+      // Keep edges while traveling back; retract them like the reverse of the open draw
+      const shouldAnimate =
+        returningFrom && !instant && !prefersReducedMotion();
+
+      if (returningFrom && !shouldAnimate) {
+        clearEdges();
       }
 
+      const erasePromise = shouldAnimate ? eraseEdges() : Promise.resolve();
       await travelTo(homeColumn, { instant: instant || prefersReducedMotion() });
+      await erasePromise;
 
       clearEdges();
       detailColumn.hidden = true;
@@ -339,6 +372,12 @@
     syncCameraPadding();
     travelTo(activeSection ? detailColumn : homeColumn, { instant: true });
     if (activeSection) drawEdges({ animate: false });
+  });
+
+  window.addEventListener("fun-stats-updated", () => {
+    if (activeSection === "fun" && !isMobile()) {
+      drawEdges({ animate: false });
+    }
   });
 
   // Boot
