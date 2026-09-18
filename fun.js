@@ -25,13 +25,15 @@
   };
 
   const bars = document.getElementById("lang-bars");
-  if (!bars) return;
+  const commitsEl = document.querySelector('[data-fun="commits"]');
 
   function notifyUpdated() {
     window.dispatchEvent(new CustomEvent("fun-stats-updated"));
   }
 
   function renderLanguages(entries) {
+    if (!bars) return;
+
     if (!entries.length) {
       bars.innerHTML = `<p class="fun-loading">No public language data found.</p>`;
       notifyUpdated();
@@ -58,6 +60,8 @@
   }
 
   async function loadLanguages() {
+    if (!bars) return;
+
     try {
       const reposRes = await fetch(
         `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&type=owner&sort=updated`
@@ -105,5 +109,28 @@
     }
   }
 
+  async function loadCommits() {
+    if (!commitsEl) return;
+
+    try {
+      const res = await fetch("./data/fun-stats.json", { cache: "no-store" });
+      if (!res.ok) throw new Error(`fun-stats ${res.status}`);
+      const data = await res.json();
+      const total = data && data.lifetimeCommits;
+
+      if (typeof total === "number" && Number.isFinite(total)) {
+        commitsEl.textContent = total.toLocaleString();
+      } else {
+        commitsEl.textContent = "—";
+      }
+      notifyUpdated();
+    } catch (err) {
+      console.warn("fun-stats.json fetch failed:", err);
+      commitsEl.textContent = "—";
+      notifyUpdated();
+    }
+  }
+
   loadLanguages();
+  loadCommits();
 })();

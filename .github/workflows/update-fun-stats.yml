@@ -1,0 +1,116 @@
+# Updates data/fun-stats.json with lifetime GitHub commit contributions.
+#
+# Uses GITHUB_TOKEN by default. If the count stays 0 after a manual run,
+# add a classic PAT with `read:user` as repo secret FUN_STATS_TOKEN
+# (Settings → Secrets and variables → Actions).
+name: Update fun stats
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch lifetime commits
+        env:
+          # Prefer a dedicated PAT if present; otherwise use the job token.
+          GH_TOKEN: ${{ secrets.FUN_STATS_TOKEN || secrets.GITHUB_TOKEN }}
+          LOGIN: WilliamThackeray
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+
+          const token = process.env.GH_TOKEN;
+          const login = process.env.LOGIN;
+          if (!token) {
+            console.error("Missing GH_TOKEN");
+            process.exit(1);
+          }
+
+          async function graphql(query, variables = {}) {
+            const res = await fetch("https://api.github.com/graphql", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "fun-stats-action",
+              },
+              body: JSON.stringify({ query, variables }),
+            });
+            const json = await res.json();
+            if (!res.ok || json.errors) {
+              throw new Error(JSON.stringify(json.errors || json, null, 2));
+            }
+            return json.data;
+          }
+
+          (async () => {
+            const userData = await graphql(
+              `query ($login: String!) {
+                user(login: $login) {
+                  createdAt
+                }
+              }`,
+              { login }
+            );
+
+            const created = new Date(userData.user.createdAt);
+            const now = new Date();
+            let total = 0;
+
+            for (let year = created.getUTCFullYear(); year <= now.getUTCFullYear(); year++) {
+              const from = new Date(Date.UTC(year, 0, 1)).toISOString();
+              const toExclusive = new Date(Date.UTC(year + 1, 0, 1)).toISOString();
+
+              const yearData = await graphql(
+                `query ($login: String!, $from: DateTime!, $to: DateTime!) {
+                  user(login: $login) {
+                    contributionsCollection(from: $from, to: $to) {
+                      totalCommitContributions
+                    }
+                  }
+                }`,
+                { login, from, to: toExclusive }
+              );
+
+              total +=
+                yearData.user.contributionsCollection.totalCommitContributions || 0;
+            }
+
+            const out = {
+              login,
+              lifetimeCommits: total,
+              updatedAt: new Date().toISOString(),
+            };
+
+            const file = path.join("data", "fun-stats.json");
+            fs.mkdirSync(path.dirname(file), { recursive: true });
+            fs.writeFileSync(file, JSON.stringify(out, null, 2) + "\n");
+            console.log(`Wrote ${file}:`, out);
+          })().catch((err) => {
+            console.error(err);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Commit stats file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/fun-stats.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update fun-stats.json"
+            git push
+          fi
